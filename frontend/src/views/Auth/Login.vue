@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-indigo-100 flex items-center justify-center">
-    <div class="relative w-full h-full flex items-center justify-center">
+  <div class="h-screen w-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-indigo-100 flex items-center justify-center overflow-hidden">
+    <div class="relative w-full h-full flex items-center justify-center p-4">
       <!-- Background decorative elements -->
       <div class="absolute top-8 left-8 w-32 h-32 bg-emerald-200 rounded-full opacity-20 animate-pulse"></div>
       <div class="absolute bottom-6 right-6 w-24 h-24 bg-blue-200 rounded-full opacity-30 animate-pulse delay-1000"></div>
       
       <!-- Main login card -->
-      <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20 relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20 relative">
         <!-- Header with icon -->
         <div class="text-center mb-8">
           <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-full mb-4 shadow-lg">
@@ -23,7 +23,7 @@
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Username field -->
           <div class="relative">
-            <label for="username" class=" text-gray-700 text-sm font-semibold mb-2 flex items-center">
+            <label for="username" class="text-gray-700 text-sm font-semibold mb-2 flex items-center">
               <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
@@ -41,7 +41,7 @@
 
           <!-- Password field -->
           <div class="relative">
-            <label for="password" class=" text-gray-700 text-sm font-semibold mb-2 flex items-center">
+            <label for="password" class="text-gray-700 text-sm font-semibold mb-2 flex items-center">
               <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
@@ -93,36 +93,6 @@
             </p>
           </div>
         </form>
-
-        <!-- Feature highlights -->
-        <div class="mt-8 pt-6 border-t border-gray-100">
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div class="flex flex-col items-center">
-              <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
-                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-              </div>
-              <span class="text-xs text-gray-600">Analisis</span>
-            </div>
-            <div class="flex flex-col items-center">
-              <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
-              </div>
-              <span class="text-xs text-gray-600">Aman</span>
-            </div>
-            <div class="flex flex-col items-center">
-              <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
-                <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-              </div>
-              <span class="text-xs text-gray-600">Cepat</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
