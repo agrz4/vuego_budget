@@ -11,9 +11,13 @@ export const getBudgets = async () => {
 
 export const getBudgetByID = async (id) => {
   try {
+    console.log('Service: Fetching budget with ID:', id);
     const response = await api.get(`/budgets/${id}`);
+    console.log('Service: Raw API response:', response);
+    console.log('Service: Response data:', response.data);
     return response.data;
   } catch (error) {
+    console.error('Service: Error in getBudgetByID:', error);
     throw new Error(error.response?.data?.error || 'Gagal mengambil anggaran');
   }
 };

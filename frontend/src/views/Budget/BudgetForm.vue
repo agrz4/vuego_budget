@@ -72,10 +72,47 @@ onMounted(async () => {
   if (route.params.id) {
     isEdit.value = true;
     try {
+      console.log('Fetching budget with ID:', route.params.id);
       const response = await getBudgetByID(route.params.id);
-      budget.value = response.data.budget;
+      console.log('API Response:', response);
+      
+      // Validasi response dengan lebih detail
+      if (response && typeof response === 'object') {
+        if (response.budget && typeof response.budget === 'object') {
+          // Pastikan semua field yang diperlukan ada
+          if (response.budget.category && response.budget.amount !== undefined) {
+            budget.value = {
+              category: response.budget.category || '',
+              amount: response.budget.amount || 0,
+              description: response.budget.description || ''
+            };
+            console.log('Budget data loaded successfully:', budget.value);
+          } else {
+            console.error('Budget data missing required fields:', response.budget);
+            error.value = 'Data anggaran tidak lengkap';
+          }
+        } else {
+          console.error('Response missing budget property:', response);
+          error.value = 'Format data anggaran tidak valid';
+        }
+      } else {
+        console.error('Invalid response type:', response);
+        error.value = 'Response dari server tidak valid';
+      }
     } catch (err) {
-      error.value = err.message || 'Gagal memuat detail anggaran.';
+      console.error('Error fetching budget:', err);
+      if (err.response) {
+        // Error dari axios dengan response
+        if (err.response.status === 404) {
+          error.value = 'Anggaran tidak ditemukan';
+        } else if (err.response.status === 401) {
+          error.value = 'Anda tidak memiliki akses ke anggaran ini';
+        } else {
+          error.value = err.response.data?.error || 'Gagal memuat detail anggaran';
+        }
+      } else {
+        error.value = err.message || 'Gagal memuat detail anggaran';
+      }
     }
   }
 });
