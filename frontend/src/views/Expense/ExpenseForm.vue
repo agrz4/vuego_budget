@@ -84,13 +84,43 @@ onMounted(async () => {
     isEdit.value = true;
     try {
       const response = await getExpenseByID(route.params.id);
-      // Format date for input type="date"
-      expense.value = {
-        ...response.data.expense,
-        date: new Date(response.data.expense.Date).toISOString().split('T')[0],
-      };
+      
+      // Validasi response dengan lebih detail
+      if (response && typeof response === 'object') {
+        if (response.expense && typeof response.expense === 'object') {
+          // Pastikan semua field yang diperlukan ada
+          if (response.expense.category && response.expense.amount !== undefined) {
+            // Format date for input type="date"
+            // Handle both 'date' and 'Date' field names from backend
+            const expenseDate = response.expense.date || response.expense.Date;
+            expense.value = {
+              category: response.expense.category || '',
+              amount: response.expense.amount || 0,
+              description: response.expense.description || '',
+              date: expenseDate ? new Date(expenseDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+            };
+          } else {
+            error.value = 'Data pengeluaran tidak lengkap';
+          }
+        } else {
+          error.value = 'Format data pengeluaran tidak valid';
+        }
+      } else {
+        error.value = 'Response dari server tidak valid';
+      }
     } catch (err) {
-      error.value = err.message || 'Gagal memuat detail pengeluaran.';
+      if (err.response) {
+        // Error dari axios dengan response
+        if (err.response.status === 404) {
+          error.value = 'Pengeluaran tidak ditemukan';
+        } else if (err.response.status === 401) {
+          error.value = 'Anda tidak memiliki akses ke pengeluaran ini';
+        } else {
+          error.value = err.response.data?.error || 'Gagal memuat detail pengeluaran';
+        }
+      } else {
+        error.value = err.message || 'Gagal memuat detail pengeluaran';
+      }
     }
   }
 });

@@ -72,9 +72,7 @@ onMounted(async () => {
   if (route.params.id) {
     isEdit.value = true;
     try {
-      console.log('Fetching budget with ID:', route.params.id);
       const response = await getBudgetByID(route.params.id);
-      console.log('API Response:', response);
       
       // Validasi response dengan lebih detail
       if (response && typeof response === 'object') {
@@ -86,21 +84,16 @@ onMounted(async () => {
               amount: response.budget.amount || 0,
               description: response.budget.description || ''
             };
-            console.log('Budget data loaded successfully:', budget.value);
           } else {
-            console.error('Budget data missing required fields:', response.budget);
             error.value = 'Data anggaran tidak lengkap';
           }
         } else {
-          console.error('Response missing budget property:', response);
           error.value = 'Format data anggaran tidak valid';
         }
       } else {
-        console.error('Invalid response type:', response);
         error.value = 'Response dari server tidak valid';
       }
     } catch (err) {
-      console.error('Error fetching budget:', err);
       if (err.response) {
         // Error dari axios dengan response
         if (err.response.status === 404) {
