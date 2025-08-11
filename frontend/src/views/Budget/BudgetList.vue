@@ -30,7 +30,7 @@
             <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ budget.category }}</td>
             <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ formatCurrency(budget.amount) }}</td>
             <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ budget.description || '-' }}</td>
-            <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ formatDate(budget.CreatedAt) }}</td>
+            <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ formatDate(budget.created_at || budget.CreatedAt) }}</td>
             <td class="py-4 px-6 whitespace-nowrap text-center">
               <router-link :to="`/budgets/edit/${budget.ID}`" class="text-blue-600 hover:text-blue-900 mr-3">Edit</router-link>
               <button @click="confirmDelete(budget.ID)" class="text-red-600 hover:text-red-900">Hapus</button>
@@ -105,8 +105,22 @@ const formatCurrency = (value) => {
 };
 
 const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('id-ID', options);
+  if (!dateString) {
+    return '-';
+  }
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return '-';
+    }
+    
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
+  } catch (error) {
+    console.error('Error formatting date:', dateString, error);
+    return '-';
+  }
 };
 
 onMounted(() => {

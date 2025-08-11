@@ -80,7 +80,7 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
           <tr v-for="expense in expenses" :key="expense.ID">
-            <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ formatDate(expense.Date) }}</td>
+            <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ formatDate(expense.date || expense.Date) }}</td>
             <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ expense.category }}</td>
             <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ formatCurrency(expense.amount) }}</td>
             <td class="py-4 px-6 whitespace-nowrap text-gray-800">{{ expense.description || '-' }}</td>
@@ -184,8 +184,22 @@ const formatCurrency = (value) => {
 };
 
 const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('id-ID', options);
+  if (!dateString) {
+    return '-';
+  }
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return '-';
+    }
+    
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
+  } catch (error) {
+    console.error('Error formatting date:', dateString, error);
+    return '-';
+  }
 };
 
 onMounted(() => {
