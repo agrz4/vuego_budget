@@ -14,7 +14,6 @@
               <h1 class="text-xl lg:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
                 BudgetApp
               </h1>
-              <p class="text-xs lg:text-sm text-gray-500">Kelola keuangan dengan mudah</p>
             </div>
             <div class="sm:hidden">
               <h1 class="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
@@ -77,7 +76,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                   </svg>
                 </div>
-                <span class="text-sm lg:text-base font-medium text-gray-700 hidden md:block">{{ username || 'Pengguna' }}</span>
+                <span class="text-sm lg:text-base font-medium text-gray-700 hidden md:block">{{ name || username || 'Pengguna' }}</span>
                 <svg class="w-4 h-4 text-gray-500 transition-transform duration-200" :class="{ 'rotate-180': showUserMenu }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
@@ -97,7 +96,7 @@
                   class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50 backdrop-blur-sm"
                 >
                   <div class="px-4 py-3 border-b border-gray-100">
-                    <p class="text-sm font-semibold text-gray-900">{{ username || 'Pengguna' }}</p>
+                    <p class="text-sm font-semibold text-gray-900">{{ name || username || 'Pengguna' }}</p>
                     <p class="text-xs text-emerald-600">Pengguna Aktif</p>
                   </div>
                   
@@ -215,24 +214,34 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { checkAuth, logoutUser } from '../services/auth';
+import { checkAuth, logoutUser, getCurrentUser } from '../services/auth';
 
 const router = useRouter();
 const isAuthenticated = ref(false);
 const username = ref('');
+const name = ref('');
 const showUserMenu = ref(false);
 const userDropdown = ref(null);
 
 const checkAuthenticationStatus = async () => {
   isAuthenticated.value = await checkAuth();
   // Get username from localStorage or API
+  name.value = localStorage.getItem('name') || '';
   username.value = localStorage.getItem('username') || '';
+  if (isAuthenticated.value && (!name.value || !username.value)) {
+    const user = await getCurrentUser();
+    if (user) {
+      name.value = user.name || '';
+      username.value = user.username || '';
+    }
+  }
 };
 
 const logout = async () => {
   await logoutUser();
   isAuthenticated.value = false;
   username.value = '';
+  name.value = '';
   showUserMenu.value = false;
   router.push('/login');
 };

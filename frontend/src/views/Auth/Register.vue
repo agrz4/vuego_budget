@@ -21,6 +21,22 @@
         </div>
 
         <form @submit.prevent="handleRegister" class="space-y-6">
+          <!-- Name field -->
+          <div class="relative">
+            <label for="name" class="text-gray-700 text-sm font-semibold mb-2 flex items-center">
+              <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 018 17h8a4 4 0 012.879 1.121M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Nama Lengkap
+            </label>
+            <input
+              type="text"
+              id="name"
+              v-model="name"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 bg-gray-50 hover:bg-white"
+              placeholder="Masukkan nama lengkap"
+            />
+          </div>
           <!-- Username field -->
           <div class="relative">
             <label for="username" class="text-gray-700 text-sm font-semibold mb-2 flex items-center">
@@ -103,6 +119,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { registerUser } from '../../services/auth';
 
+const name = ref('');
 const username = ref('');
 const password = ref('');
 const error = ref('');
@@ -111,7 +128,7 @@ const router = useRouter();
 const handleRegister = async () => {
   try {
     error.value = '';
-    await registerUser(username.value, password.value);
+    await registerUser(username.value, password.value, name.value);
     window.dispatchEvent(new Event('auth-status-changed')); // Notify App.vue
     router.push('/login'); // Redirect to login after successful registration
   } catch (err) {

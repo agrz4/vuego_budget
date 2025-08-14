@@ -41,6 +41,8 @@ func main() {
 	authorized := router.Group("/api")
 	authorized.Use(middleware.JWTMiddleware())
 	{
+		// Profil Pengguna
+		authorized.GET("/me", controllers.Me)
 		// Rute Budget
 		authorized.POST("/budgets", controllers.CreateBudget)
 		authorized.GET("/budgets", controllers.GetBudgets)

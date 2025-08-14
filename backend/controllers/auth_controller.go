@@ -37,6 +37,23 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Registrasi berhasil"})
 }
 
+// Me returns current authenticated user's basic profile
+func Me(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	var user models.User
+	if result := database.DB.First(&user, userID); result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil profil pengguna"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"id": user.ID, "username": user.Username, "name": user.Name})
+}
+
 // Login handles user login and generates JWT token
 func Login(c *gin.Context) {
 	var loginUser models.User
@@ -67,5 +84,5 @@ func Login(c *gin.Context) {
 	// Set cookie for JWT token (optional, for browser-based apps)
 	c.SetCookie("token", token, int((time.Hour * 24).Seconds()), "/", os.Getenv("FRONTEND_DOMAIN"), false, true)
 
-	c.JSON(http.StatusOK, gin.H{"message": "Login berhasil", "token": token})
+	c.JSON(http.StatusOK, gin.H{"message": "Login berhasil", "token": token, "user": gin.H{"id": user.ID, "username": user.Username, "name": user.Name}})
 }
