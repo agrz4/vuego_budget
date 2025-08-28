@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-md">
-    <h3 class="text-xl font-semibold mb-4 text-gray-800">Pengeluaran per Kategori</h3>
+  <div class="bg-white p-9 rounded-lg shadow-md">
+    <h3 class="text-xl font-semibold text-gray-800">Pengeluaran per Kategori</h3>
     <canvas ref="pieChartCanvas"></canvas>
   </div>
 </template>
