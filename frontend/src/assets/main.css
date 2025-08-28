@@ -1,3 +1,8 @@
 @import './base.css';
 @import 'tailwindcss';
 
+html, body {
+  overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan di seluruh halaman */
+  overflow-y: auto; /* Mengaktifkan scroll vertikal jika konten melebihi tinggi viewport */
+  height: 100%; /* Memastikan elemen mengisi tinggi viewport penuh */
+}
